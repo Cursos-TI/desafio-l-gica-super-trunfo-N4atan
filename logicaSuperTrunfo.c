@@ -5,19 +5,8 @@
 // Este código inicial serve como base para o desenvolvimento do sistema de comparação de cartas de cidades.
 // Siga os comentários para implementar cada parte do desafio.
 
-void cadastroCarta(
-    int numCarta, 
-    char *c_uf, 
-    char c_nome[], 
-    int *c_id, 
-    unsigned long int *c_pop, 
-    float *c_km, 
-    float *c_pib, 
-    int *c_pt, 
-    float *c_dp, 
-    float *c_pibC, 
-    float *c_super
-) {
+void cadastroCarta(int numCarta, char *c_uf, char c_nome[], int *c_id, unsigned long int *c_pop, float *c_km, float *c_pib, int *c_pt, float *c_dp, float *c_pibC, float *c_super)
+{
     printf("\n ----- Cadastro de Carta %i ----- \n", numCarta);
     printf("\n 1.1 - De qual estado ela é?              [ A - H ]: ");
     scanf(" %c", c_uf);
@@ -40,11 +29,10 @@ void cadastroCarta(
     printf("\n 1.7 - Quantos pontos turisticos possui? ");
     scanf("%d", c_pt);
 
-    *c_dp   = (float)(*c_pop) / (*c_km);
+    *c_dp = (float)(*c_pop) / (*c_km);
     *c_pibC = (float)(*c_pib) / (*c_pop);
     *c_super = (float)(*c_pop + *c_km + *c_pib + *c_pt + *c_pibC + (1 / *c_dp));
 }
-
 
 void exibirCarta(int numCarta, char c_uf, char c_nome[], int c_id, unsigned long int c_pop, float c_km, float c_pib, int c_pt, float c_dp, float c_pibC, float c_super)
 {
@@ -72,10 +60,92 @@ void exibirCarta(int numCarta, char c_uf, char c_nome[], int c_id, unsigned long
            c_super);
 }
 
+// 'void *' é um ponteiro coringa
+void comparaCaracteristicas(int isDP, void *c1, void *c2, char tipo)
+{
+    if (isDP)
+    {
+        float a = *(float *)c1;
+        float b = *(float *)c2;
+
+        if (a == b)
+        {
+            printf("Empate!");
+        }
+        else if (a < b)
+        {
+            printf("A Carta 1 Vence!");
+        }
+        else
+        {
+            printf("A Carta 2 Vence!");
+        }
+
+        return;
+    }
+
+    switch (tipo)
+    {
+    case 'i':
+        int ai = *(int *)c1;
+        int bi = *(int *)c2;
+        
+        if (ai == bi) 
+        {
+            printf("Empate!\n");
+        } else if (ai > bi) {
+            printf("Carta 1 vence!\n");
+        } else {
+            printf("Carta 2 vence!\n");
+        }
+        break;
+
+    case 'f':
+        float af = *(float *)c1;
+        float bf = *(float *)c2;
+
+        if (af == bf) 
+        {
+            printf("Empate!\n");
+        } else if (af > bf) {
+            printf("Carta 1 vence!\n");
+        } else {
+            printf("Carta 2 vence!\n");
+        }
+        break;
+
+    case 'd':
+        double ad = *(double *)c1;
+        double bd = *(double *)c2; 
+        
+        if (ad == bd) 
+        {
+            printf("Empate!\n");
+        } else if (ad > bd) {
+            printf("Carta 1 vence!\n");
+        } else {
+            printf("Carta 2 vence!\n");
+        }
+        break;
+
+    case 'u':
+        unsigned long int au = *(unsigned long int *)c1;
+        unsigned long int bu = *(unsigned long int *)c2; 
+        
+        if (au == bu) 
+        {
+            printf("Empate!\n");
+        } else if (au > bu) {
+            printf("Carta 1 vence!\n");
+        } else {
+            printf("Carta 2 vence!\n");
+        }
+        break;
+    }
+}
+
 int main()
 {
-    // Definição das variáveis para armazenar as propriedades das cidades
-    // Você pode utilizar o código do primeiro desafio
     char c1_uf, c2_uf;
     char c1_nome[30], c2_nome[30];
     int c1_id, c2_id;
@@ -87,10 +157,8 @@ int main()
     float c1_pibC, c2_pibC; // Necessário uma validação, se PIB é milhões ou bilhões.
     float c1_super, c2_super;
 
-    // Cadastro das Cartas:
-    // Implemente a lógica para solicitar ao usuário que insira os dados das cidades
-    // utilizando a função scanf para capturar as entradas.
-    // utilize o código do primeiro desafio
+    int opMenu;
+
     cadastroCarta(
         1,
         &c1_uf,
@@ -117,20 +185,59 @@ int main()
         &c2_pibC,
         &c2_super);
 
-    // Comparação de Cartas:
-    // Desenvolva a lógica de comparação entre duas cartas.
-    // Utilize estruturas de decisão como if, if-else para comparar atributos como população, área, PIB, etc.
-    printf("\n -> Vamos comparar com base na população! \n");
-    printf("1 - %s: %lu \n", c1_nome, c1_pop);
-    printf("2 - %s: %lu \n", c2_nome, c2_pop);
 
-    if (c1_pop > c2_pop)
+    printf("---         Super Trunfo         --- \n");
+    printf("-- Qual Atributo Deseja Comparar? -- \n");
+    printf("- 1. População                     - \n");
+    printf("- 2. Area Total                    - \n");
+    printf("- 3. PIB                           - \n");
+    printf("- 4. Pontos Turisticos             - \n");
+    printf("- 5. Densidade Populacional        - \n");
+    printf("- 6. PIB p/Capita                  - \n");
+    printf("- 7. Super Poder                   - \n");
+    printf("R: ");
+    scanf("%i", &opMenu);
+
+    switch (opMenu)
     {
-        printf("--> Cidade 1 - %s tem maior população.\n", c1_nome);
-    }
-    else
-    {
-        printf("--> Cidade 2 - %s tem maior população.\n", c2_nome);
+    case 1:
+        printf("-> Comparando Populacao: \n");
+        comparaCaracteristicas(0, &c1_pop, &c2_pop, 'u');
+        break;
+
+    case 2:
+        printf("-> Comparando Area Total: \n");
+        comparaCaracteristicas(0, &c1_km, &c2_km, 'f');
+        break;
+
+    case 3:
+        printf("-> Comparando PIB: \n");
+        comparaCaracteristicas(0, &c1_pib, &c2_pib, 'f');
+        break;
+
+    case 4:
+        printf("-> Comparando Pontos Turisticos: \n");
+        comparaCaracteristicas(0, &c1_pt, &c2_pt, 'i');
+        break;
+
+    case 5:
+        printf("-> Comparando Densidade Populacional: \n");
+        comparaCaracteristicas(1, &c1_dp, &c2_dp, 'f');
+        break;
+
+    case 6:
+        printf("-> Comparando PIB per/Capita: \n");
+        comparaCaracteristicas(0, &c1_pibC, &c2_pibC, 'f');
+        break;
+
+    case 7:
+        printf("-> Comparando Super Poder (Soma de todos atributos): \n");
+        comparaCaracteristicas(0, &c1_super, &c2_super, 'f');
+        break;
+
+    default:
+        printf("-> Ops... opcao invalida! \n");
+        break;
     }
 
     return 0;
