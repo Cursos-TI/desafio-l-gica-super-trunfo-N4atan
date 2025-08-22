@@ -61,27 +61,14 @@ void exibirCarta(int numCarta, char c_uf, char c_nome[], int c_id, unsigned long
 }
 
 // 'void *' é um ponteiro coringa
-void comparaCaracteristicas(int isDP, void *c1, void *c2, char tipo)
+int comparaCaracteristicas(int isDP, void *c1, void *c2, char tipo)
 {
     if (isDP)
     {
         float a = *(float *)c1;
         float b = *(float *)c2;
 
-        if (a == b)
-        {
-            printf("Empate!");
-        }
-        else if (a < b)
-        {
-            printf("A Carta 1 Vence!");
-        }
-        else
-        {
-            printf("A Carta 2 Vence!");
-        }
-
-        return;
+        return (a == b)? 0 : (a < b)? 1 : 2;
     }
 
     switch (tipo)
@@ -90,57 +77,26 @@ void comparaCaracteristicas(int isDP, void *c1, void *c2, char tipo)
         int ai = *(int *)c1;
         int bi = *(int *)c2;
         
-        if (ai == bi) 
-        {
-            printf("Empate!\n");
-        } else if (ai > bi) {
-            printf("Carta 1 vence!\n");
-        } else {
-            printf("Carta 2 vence!\n");
-        }
-        break;
+        return (ai == bi)? 0 : (ai > bi)? 1 : 2;
 
     case 'f':
         float af = *(float *)c1;
         float bf = *(float *)c2;
 
-        if (af == bf) 
-        {
-            printf("Empate!\n");
-        } else if (af > bf) {
-            printf("Carta 1 vence!\n");
-        } else {
-            printf("Carta 2 vence!\n");
-        }
-        break;
+        return (af == bf)? 0 : (af > bf)? 1 : 2;
 
     case 'd':
         double ad = *(double *)c1;
         double bd = *(double *)c2; 
         
-        if (ad == bd) 
-        {
-            printf("Empate!\n");
-        } else if (ad > bd) {
-            printf("Carta 1 vence!\n");
-        } else {
-            printf("Carta 2 vence!\n");
-        }
-        break;
+        return (ad == bd)? 0 : (ad > bd)? 1 : 2;
 
     case 'u':
         unsigned long int au = *(unsigned long int *)c1;
         unsigned long int bu = *(unsigned long int *)c2; 
-        
-        if (au == bu) 
-        {
-            printf("Empate!\n");
-        } else if (au > bu) {
-            printf("Carta 1 vence!\n");
-        } else {
-            printf("Carta 2 vence!\n");
-        }
-        break;
+
+        return (au == bu)? 0 : (au > bu)? 1 : 2;
+
     }
 }
 
@@ -157,7 +113,9 @@ int main()
     float c1_pibC, c2_pibC; // Necessário uma validação, se PIB é milhões ou bilhões.
     float c1_super, c2_super;
 
-    int opMenu;
+    int opMenu1, opMenu2;
+    int result1, result2;
+    int empates = 0, vitorias_c1 = 0, vitorias_c2 = 0;
 
     cadastroCarta(
         1,
@@ -186,53 +144,60 @@ int main()
         &c2_super);
 
 
-    printf("---         Super Trunfo         --- \n");
-    printf("-- Qual Atributo Deseja Comparar? -- \n");
-    printf("- 1. População                     - \n");
-    printf("- 2. Area Total                    - \n");
-    printf("- 3. PIB                           - \n");
-    printf("- 4. Pontos Turisticos             - \n");
-    printf("- 5. Densidade Populacional        - \n");
-    printf("- 6. PIB p/Capita                  - \n");
-    printf("- 7. Super Poder                   - \n");
+    printf("\n---         Super Trunfo                     --- \n");
+    printf("-- Qual o Primeiro Atributo a Ser Comparado?  -- \n");
+    printf("- 1. População                                 - \n");
+    printf("- 2. Area Total                                - \n");
+    printf("- 3. PIB                                       - \n");
+    printf("- 4. Pontos Turisticos                         - \n");
+    printf("- 5. Densidade Populacional                    - \n");
+    printf("- 6. PIB p/Capita                              - \n");
+    printf("- 7. Super Poder                               - \n");
     printf("R: ");
-    scanf("%i", &opMenu);
+    scanf("%i", &opMenu1);
 
-    switch (opMenu)
+    switch (opMenu1)
     {
     case 1:
         printf("-> Comparando Populacao: \n");
-        comparaCaracteristicas(0, &c1_pop, &c2_pop, 'u');
+        result1 = comparaCaracteristicas(0, &c1_pop, &c2_pop, 'u');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 2:
         printf("-> Comparando Area Total: \n");
-        comparaCaracteristicas(0, &c1_km, &c2_km, 'f');
+        result1 = comparaCaracteristicas(0, &c1_km, &c2_km, 'f');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 3:
         printf("-> Comparando PIB: \n");
-        comparaCaracteristicas(0, &c1_pib, &c2_pib, 'f');
+        result1 = comparaCaracteristicas(0, &c1_pib, &c2_pib, 'f');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 4:
         printf("-> Comparando Pontos Turisticos: \n");
-        comparaCaracteristicas(0, &c1_pt, &c2_pt, 'i');
+        result1 = comparaCaracteristicas(0, &c1_pt, &c2_pt, 'i');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 5:
         printf("-> Comparando Densidade Populacional: \n");
-        comparaCaracteristicas(1, &c1_dp, &c2_dp, 'f');
+        result1 = comparaCaracteristicas(1, &c1_dp, &c2_dp, 'f');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 6:
         printf("-> Comparando PIB per/Capita: \n");
-        comparaCaracteristicas(0, &c1_pibC, &c2_pibC, 'f');
+        result1 = comparaCaracteristicas(0, &c1_pibC, &c2_pibC, 'f');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     case 7:
         printf("-> Comparando Super Poder (Soma de todos atributos): \n");
-        comparaCaracteristicas(0, &c1_super, &c2_super, 'f');
+        result1 = comparaCaracteristicas(0, &c1_super, &c2_super, 'f');
+        printf("Resultado: %s", (result1 == 0)? "Empate" : (result1 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
         break;
 
     default:
@@ -240,5 +205,92 @@ int main()
         break;
     }
 
+    printf("\n---         Super Trunfo                     --- \n");
+    printf("-- Qual o Segundo Atributo a Ser Comparado?   -- \n");
+    printf("- 1. População                                 - \n");
+    printf("- 2. Area Total                                - \n");
+    printf("- 3. PIB                                       - \n");
+    printf("- 4. Pontos Turisticos                         - \n");
+    printf("- 5. Densidade Populacional                    - \n");
+    printf("- 6. PIB p/Capita                              - \n");
+    printf("- 7. Super Poder                               - \n");
+    printf("R: ");
+    scanf("%i", &opMenu2);
+
+    switch (opMenu2)
+    {
+    case 1:
+        printf("-> Comparando Populacao: \n");
+        result2 = comparaCaracteristicas(0, &c1_pop, &c2_pop, 'u');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 2:
+        printf("-> Comparando Area Total: \n");
+        result2 = comparaCaracteristicas(0, &c1_km, &c2_km, 'f');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 3:
+        printf("-> Comparando PIB: \n");
+        result2 = comparaCaracteristicas(0, &c1_pib, &c2_pib, 'f');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 4:
+        printf("-> Comparando Pontos Turisticos: \n");
+        result2 = comparaCaracteristicas(0, &c1_pt, &c2_pt, 'i');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 5:
+        printf("-> Comparando Densidade Populacional: \n");
+        result2 = comparaCaracteristicas(1, &c1_dp, &c2_dp, 'f');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 6:
+        printf("-> Comparando PIB per/Capita: \n");
+        result2 = comparaCaracteristicas(0, &c1_pibC, &c2_pibC, 'f');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    case 7:
+        printf("-> Comparando Super Poder (Soma de todos atributos): \n");
+        result2 = comparaCaracteristicas(0, &c1_super, &c2_super, 'f');
+        printf("Resultado: %s", (result2 == 0)? "Empate" : (result2 == 1)? "Carta 1 Venceu" : "Carta 2 Venceu");
+        break;
+
+    default:
+        printf("-> Ops... opcao invalida! \n");
+        break;
+    }
+
+    
+
+    // Após obter result1 do primeiro atributo
+    if (result1 == 0) {
+        empates++;
+    } else if (result1 == 1) {
+        vitorias_c1++;
+    } else if (result1 == 2) {
+        vitorias_c2++;
+    }
+
+    // Após obter result2 do segundo atributo
+    if (result2 == 0) {
+        empates++;
+    } else if (result2 == 1) {
+        vitorias_c1++;
+    } else if (result2 == 2) {
+        vitorias_c2++;
+    }
+
+    // Exibir o placar final
+    printf("\n\n--- PLACAR FINAL ---\n");
+    printf("Empates: %d\n", empates);
+    printf("Vitórias Carta 1 (%s): %d\n", c1_nome, vitorias_c1);
+    printf("Vitórias Carta 2 (%s): %d\n", c2_nome, vitorias_c2);
+    
     return 0;
 }
